@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://art1.png" type="Texture" id=1]
+
+[node name="Marker" type="Sprite"]
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 24, 8, 8, 8 )
