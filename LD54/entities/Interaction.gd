@@ -9,6 +9,7 @@ export var remove_self = false
 export var remove_actor = false
 
 onready var game = $"/root/Game"
+var has_triggered = false
 
 func blocks():
 	return movement != MovementType.Overlap
@@ -19,7 +20,14 @@ func can_interact():
 
 
 func start(actor):
-	pass
+	has_triggered = false
+
+
+func trigger(actor):
+	if not has_triggered:
+		if movement == MovementType.Pushed:
+			game.try_push(actor, get_parent())
+		has_triggered = true
 
 
 func resolve(actor):

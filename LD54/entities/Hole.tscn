@@ -15,7 +15,6 @@ script = ExtResource( 2 )
 [node name="Interaction_Ball" type="Node" parent="."]
 script = ExtResource( 3 )
 movement = 1
-remove_self = true
 remove_actor = true
 
 [node name="Interaction_Hero" type="Node" parent="."]

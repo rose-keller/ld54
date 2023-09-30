@@ -8,16 +8,6 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "Node2D",
-"class": "Character",
-"language": "GDScript",
-"path": "res://game/Character.gd"
-} ]
-_global_script_class_icons={
-"Character": ""
-}
-
 [application]
 
 config/name="LD54"
@@ -27,7 +17,6 @@ config/icon="res://icon.png"
 [autoload]
 
 IntegerResolutionHandler="*res://addons/integer_resolution_handler/integer_resolution_handler.gd"
-TileHelper="*res://game/TileHelper.gd"
 
 [display]
 

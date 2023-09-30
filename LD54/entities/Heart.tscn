@@ -18,3 +18,8 @@ script = ExtResource( 2 )
 movement = 1
 gives = "Heart"
 remove_self = true
+
+[node name="Interaction_Ball" type="Node" parent="."]
+script = ExtResource( 2 )
+movement = 1
+remove_self = true
