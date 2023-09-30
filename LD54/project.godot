@@ -28,7 +28,6 @@ config/icon="res://icon.png"
 
 IntegerResolutionHandler="*res://addons/integer_resolution_handler/integer_resolution_handler.gd"
 TileHelper="*res://game/TileHelper.gd"
-GameUI="*res://ui/GameUI.tscn"
 
 [display]
 

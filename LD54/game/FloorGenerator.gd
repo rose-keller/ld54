@@ -10,19 +10,11 @@ export(Resource) var entrance
 export(Array, Resource) var obstacles = []
 export(Array, Resource) var treasures = []
 
-onready var tilehelper = $"/root/TileHelper"
+onready var game = $"/root/Game"
 onready var tilemap = $TileMap
 var entities_by_coord = {}
 var entrance_coord
 var hero
-
-func _ready():
-	randomize()
-	generate_floor()
-
-func _input(event):
-	if event.is_action_pressed("a"):
-		generate_floor()
 
 
 func generate_floor():
@@ -33,22 +25,23 @@ func generate_floor():
 		entities_by_coord[c].queue_free()
 	entities_by_coord.clear()
 	
+	if hero:
+		remove_child(hero)
+		hero.queue_free()
+	
 	generate_exits()
 	generate_entities(obstacles, 3) #rand_range(3, 4))
 	generate_entities(treasures, 1, true)#rand_range(1, 2))
 
-#	if not hero:
-#		hero = hero_resource.instance()
-#		add_child(hero)
-#	else:
-#		move_child(hero, get_child_count())
-#	hero.position = entrance_coord * tilesize
+	move_child(hero, get_child_count())
+	entities_by_coord.erase(entrance_coord)
+	return hero
 
 
 func generate_exits():
 	var entrance_side = randi() % 4
 	entrance_coord = get_coord_on_side(entrance_side)
-	spawn(hero_resource, entrance_coord)
+	hero = spawn(hero_resource, entrance_coord)
 
 	var exit_side = (entrance_side + 2) % 4
 	var exit_coord = get_coord_on_side(exit_side)
@@ -78,6 +71,7 @@ func spawn(resource, coord):
 	add_child(entity)
 	entities_by_coord[coord] = entity
 	entity.position = coord * tilesize
+	return entity
 
 
 func generate_tiles():
@@ -92,6 +86,11 @@ func generate_tiles():
 	for x in range(floor_width):
 		for y in range(floor_height):
 			tilemap.set_cell(x, y, 1 if (x + y) % 2 else 3)
+
+
+func is_in_bounds(coord):
+	return coord.x >= 0 and coord.x < floor_width \
+		and coord.y >= 0 and coord.y < floor_height
 
 
 func get_coord_on_side(side):

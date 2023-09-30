@@ -28,7 +28,8 @@ border_color = Color( 0, 0, 0, 0 )
 
 [resource]
 default_font = ExtResource( 1 )
-Label/colors/font_color = Color( 0, 0, 0, 1 )
+Label/colors/font_color = Color( 1, 1, 1, 1 )
+Label/constants/line_spacing = 0
 Panel/styles/panel = SubResource( 3 )
 ProgressBar/styles/bg = SubResource( 1 )
 ProgressBar/styles/fg = SubResource( 2 )
