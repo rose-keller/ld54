@@ -11,12 +11,12 @@ border_width_bottom = 1
 border_color = Color( 0.772549, 0.380392, 0.160784, 1 )
 
 [sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0, 0, 0, 1 )
+bg_color = Color( 0.168627, 0.145098, 0.168627, 1 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color( 0.596078, 0.541176, 0.627451, 1 )
+border_color = Color( 1, 0.678431, 0.388235, 1 )
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.254902, 0.254902, 0.254902, 1 )

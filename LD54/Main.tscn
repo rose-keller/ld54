@@ -1,12 +1,104 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://game/FloorGenerator.gd" type="Script" id=1]
 [ext_resource path="res://art1.png" type="Texture" id=2]
 [ext_resource path="res://autotile.png" type="Texture" id=3]
-[ext_resource path="res://HealthBar.gd" type="Script" id=4]
+[ext_resource path="res://ui/HealthBar.gd" type="Script" id=4]
 [ext_resource path="res://ui/HealthBarHeart.tscn" type="PackedScene" id=5]
+[ext_resource path="res://game/ShopItem.gd" type="Script" id=6]
+[ext_resource path="res://ui/EquipmentUI.gd" type="Script" id=7]
+[ext_resource path="res://game/Surface.gd" type="Script" id=8]
+[ext_resource path="res://entities/Ladder.tscn" type="PackedScene" id=9]
+[ext_resource path="res://entities/Interaction.gd" type="Script" id=10]
+[ext_resource path="res://9 - Fern Emmett - Stop The Opportunity.mp3" type="AudioStream" id=11]
 [ext_resource path="res://game/Game.gd" type="Script" id=12]
 [ext_resource path="res://ui/theme.tres" type="Theme" id=13]
+
+[sub_resource type="TileSet" id=15]
+0/name = "art1.png 0"
+0/texture = ExtResource( 2 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 8, 16, 8, 8 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+1/name = "art1.png 1"
+1/texture = ExtResource( 2 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 0, 24, 8, 8 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+2/name = "art1.png 2"
+2/texture = ExtResource( 2 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 0, 16, 8, 8 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0
+3/name = "art1.png 3"
+3/texture = ExtResource( 2 )
+3/tex_offset = Vector2( 0, 0 )
+3/modulate = Color( 1, 1, 1, 1 )
+3/region = Rect2( 8, 24, 8, 8 )
+3/tile_mode = 0
+3/occluder_offset = Vector2( 0, 0 )
+3/navigation_offset = Vector2( 0, 0 )
+3/shape_offset = Vector2( 0, 0 )
+3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+3/shape_one_way = false
+3/shape_one_way_margin = 0.0
+3/shapes = [  ]
+3/z_index = 0
+4/name = "art1.png 4"
+4/texture = ExtResource( 2 )
+4/tex_offset = Vector2( 0, 0 )
+4/modulate = Color( 1, 1, 1, 1 )
+4/region = Rect2( 0, 32, 8, 8 )
+4/tile_mode = 0
+4/occluder_offset = Vector2( 0, 0 )
+4/navigation_offset = Vector2( 0, 0 )
+4/shape_offset = Vector2( 0, 0 )
+4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+4/shape_one_way = false
+4/shape_one_way_margin = 0.0
+4/shapes = [  ]
+4/z_index = 0
+5/name = "art1.png 5"
+5/texture = ExtResource( 2 )
+5/tex_offset = Vector2( 0, 0 )
+5/modulate = Color( 1, 1, 1, 1 )
+5/region = Rect2( 8, 32, 8, 8 )
+5/tile_mode = 0
+5/occluder_offset = Vector2( 0, 0 )
+5/navigation_offset = Vector2( 0, 0 )
+5/shape_offset = Vector2( 0, 0 )
+5/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+5/shape_one_way = false
+5/shape_one_way_margin = 0.0
+5/shapes = [  ]
+5/z_index = 0
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 8, 8, 0.0473633, 8, 0.0473633, 0, 8, 0 )
@@ -108,6 +200,20 @@ points = PoolVector2Array( 0, 0, 8, 0, 8, 8, 0, 8 )
 4/shape_one_way_margin = 0.0
 4/shapes = [  ]
 4/z_index = 0
+5/name = "autotile.png 5"
+5/texture = ExtResource( 3 )
+5/tex_offset = Vector2( 0, 0 )
+5/modulate = Color( 1, 1, 1, 1 )
+5/region = Rect2( 0, 24, 8, 8 )
+5/tile_mode = 0
+5/occluder_offset = Vector2( 0, 0 )
+5/navigation_offset = Vector2( 0, 0 )
+5/shape_offset = Vector2( 0, 0 )
+5/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+5/shape_one_way = false
+5/shape_one_way_margin = 0.0
+5/shapes = [  ]
+5/z_index = 0
 
 [sub_resource type="InputEventAction" id=6]
 action = "accept"
@@ -133,17 +239,346 @@ action = "cancel"
 [sub_resource type="ShortCut" id=10]
 shortcut = SubResource( 9 )
 
+[sub_resource type="Animation" id=16]
+resource_name = "fadein"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.168627, 0.145098, 0.168627, 0 ), Color( 0.168627, 0.145098, 0.168627, 1 ) ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "fadeout"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.168627, 0.145098, 0.168627, 1 ), Color( 0.168627, 0.145098, 0.168627, 0 ) ]
+}
+
 [node name="Game" type="Node"]
 script = ExtResource( 12 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 160.0
 margin_bottom = 144.0
-color = Color( 0.167969, 0.145004, 0.167969, 1 )
+color = Color( 0.168627, 0.145098, 0.168627, 1 )
+
+[node name="Surface" type="Node2D" parent="."]
+position = Vector2( 0, 8 )
+script = ExtResource( 8 )
+
+[node name="TileMap" type="TileMap" parent="Surface"]
+tile_set = SubResource( 15 )
+cell_size = Vector2( 8, 8 )
+format = 1
+tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 1, 0, 6, 1, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 1, 0, 65542, 1, 0, 65543, 0, 0, 65544, 2, 0, 65545, 0, 0, 65546, 0, 0, 65547, 0, 0, 131072, 0, 0, 131073, 0, 0, 131074, 0, 0, 131075, 0, 0, 131076, 0, 0, 131077, 1, 0, 131078, 1, 0, 131079, 0, 0, 131080, 0, 0, 131081, 0, 0, 131082, 0, 0, 131083, 0, 0, 196608, 0, 0, 196609, 2, 0, 196610, 0, 0, 196611, 2, 0, 196612, 0, 0, 196613, 1, 0, 196614, 1, 0, 196615, 0, 0, 196616, 0, 0, 196617, 0, 0, 196618, 0, 0, 196619, 0, 0, 262144, 0, 0, 262145, 0, 0, 262146, 0, 0, 262147, 0, 0, 262148, 0, 0, 262149, 1, 0, 262150, 1, 0, 262151, 0, 0, 262152, 2, 0, 262153, 0, 0, 262154, 2, 0, 262155, 0, 0, 327680, 0, 0, 327681, 2, 0, 327682, 0, 0, 327683, 2, 0, 327684, 0, 0, 327685, 1, 0, 327686, 1, 0, 327687, 0, 0, 327688, 0, 0, 327689, 0, 0, 327690, 0, 0, 327691, 0, 0, 393216, 0, 0, 393217, 0, 0, 393218, 0, 0, 393219, 0, 0, 393220, 0, 0, 393221, 1, 0, 393222, 1, 0, 393223, 0, 0, 393224, 2, 0, 393225, 0, 0, 393226, 2, 0, 393227, 0, 0, 458752, 0, 0, 458753, 0, 0, 458754, 0, 0, 458755, 0, 0, 458756, 4, 0, 458757, 3, 0, 458758, 3, 0, 458759, 5, 0, 458760, 0, 0, 458761, 0, 0, 458762, 0, 0, 458763, 0, 0 )
+
+[node name="Shop" type="Node2D" parent="Surface"]
+
+[node name="MaxGold" type="Sprite" parent="Surface/Shop"]
+position = Vector2( 64, 8 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 16, 24, 8, 8 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_group_": true
+}
+infinite_purchase = true
+
+[node name="Label" type="Label" parent="Surface/Shop/MaxGold"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 1.0
+margin_top = -8.0
+margin_right = 9.0
+margin_bottom = 8.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "10"
+
+[node name="Interaction_Hero" type="Node" parent="Surface/Shop/MaxGold"]
+script = ExtResource( 10 )
+consumes = "Gold"
+consume_amount = 10
+gives = "MaxGold"
+give_amount = 10
+remove_self = true
+
+[node name="FighterHeart" type="Sprite" parent="Surface/Shop"]
+modulate = Color( 0.482353, 0.729412, 0.45098, 1 )
+position = Vector2( 24, 24 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 32, 16, 8, 8 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_group_": true
+}
+price_array = [ 5, 15, 20 ]
+
+[node name="Label" type="Label" parent="Surface/Shop/FighterHeart"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -4.0
+margin_top = -12.0
+margin_right = 4.0
+margin_bottom = 1.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "10"
+
+[node name="Interaction_Fighter" type="Node" parent="Surface/Shop/FighterHeart"]
+script = ExtResource( 10 )
+consumes = "Gold"
+consume_amount = 10
+gives = "MaxHealth"
+give_amount = 2
+remove_self = true
+
+[node name="FighterBoots" type="Sprite" parent="Surface/Shop"]
+position = Vector2( 24, 40 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 40, 24, 8, 8 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_group_": true
+}
+price_array = [ 15 ]
+
+[node name="Label" type="Label" parent="Surface/Shop/FighterBoots"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -4.0
+margin_top = -12.0
+margin_right = 4.0
+margin_bottom = 1.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "10"
+
+[node name="Interaction_Fighter" type="Node" parent="Surface/Shop/FighterBoots"]
+script = ExtResource( 10 )
+consumes = "Gold"
+consume_amount = 20
+give_equipment = true
+remove_self = true
+
+[node name="Shield" type="Sprite" parent="Surface/Shop"]
+position = Vector2( 8, 24 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 32, 24, 8, 8 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_group_": true
+}
+price_array = [ 30 ]
+
+[node name="Label" type="Label" parent="Surface/Shop/Shield"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -4.0
+margin_top = -12.0
+margin_right = 4.0
+margin_bottom = 1.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "10"
+
+[node name="Interaction_Fighter" type="Node" parent="Surface/Shop/Shield"]
+script = ExtResource( 10 )
+consumes = "Gold"
+consume_amount = 30
+give_equipment = true
+remove_self = true
+
+[node name="Hammer" type="Sprite" parent="Surface/Shop"]
+position = Vector2( 8, 40 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 48, 24, 8, 8 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_group_": true
+}
+price_array = [ 50 ]
+
+[node name="Label" type="Label" parent="Surface/Shop/Hammer"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -4.0
+margin_top = -12.0
+margin_right = 4.0
+margin_bottom = 1.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "10"
+
+[node name="Interaction_Fighter" type="Node" parent="Surface/Shop/Hammer"]
+script = ExtResource( 10 )
+consumes = "Gold"
+consume_amount = 50
+give_equipment = true
+remove_self = true
+
+[node name="ThiefHeart" type="Sprite" parent="Surface/Shop"]
+modulate = Color( 0.741176, 0.34902, 0.870588, 1 )
+position = Vector2( 64, 32 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 32, 16, 8, 8 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_group_": true
+}
+price_array = [ 5, 10, 15, 20 ]
+
+[node name="Label" type="Label" parent="Surface/Shop/ThiefHeart"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -4.0
+margin_top = -12.0
+margin_right = 4.0
+margin_bottom = 1.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "10"
+
+[node name="Interaction_Thief" type="Node" parent="Surface/Shop/ThiefHeart"]
+script = ExtResource( 10 )
+consumes = "Gold"
+consume_amount = 10
+gives = "MaxHealth"
+give_amount = 2
+remove_self = true
+
+[node name="Pendant" type="Sprite" parent="Surface/Shop"]
+position = Vector2( 80, 32 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 56, 24, 8, 8 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_group_": true
+}
+price_array = [ 30 ]
+
+[node name="Label" type="Label" parent="Surface/Shop/Pendant"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -4.0
+margin_top = -12.0
+margin_right = 4.0
+margin_bottom = 1.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "10"
+
+[node name="Interaction_Thief" type="Node" parent="Surface/Shop/Pendant"]
+script = ExtResource( 10 )
+consumes = "Gold"
+consume_amount = 20
+give_equipment = true
+remove_self = true
+
+[node name="ThiefBoots" type="Sprite" parent="Surface/Shop"]
+position = Vector2( 64, 48 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 64, 24, 8, 8 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_group_": true
+}
+price_array = [ 15 ]
+
+[node name="Label" type="Label" parent="Surface/Shop/ThiefBoots"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -4.0
+margin_top = -12.0
+margin_right = 4.0
+margin_bottom = 1.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "10"
+
+[node name="Interaction_Thief" type="Node" parent="Surface/Shop/ThiefBoots"]
+script = ExtResource( 10 )
+consumes = "Gold"
+consume_amount = 20
+give_equipment = true
+remove_self = true
+
+[node name="Gloves" type="Sprite" parent="Surface/Shop"]
+position = Vector2( 80, 48 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 72, 24, 8, 8 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_group_": true
+}
+price_array = [ 50 ]
+
+[node name="Label" type="Label" parent="Surface/Shop/Gloves"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -4.0
+margin_top = -12.0
+margin_right = 4.0
+margin_bottom = 1.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "10"
+
+[node name="Interaction_Thief" type="Node" parent="Surface/Shop/Gloves"]
+script = ExtResource( 10 )
+consumes = "Gold"
+consume_amount = 20
+give_equipment = true
+remove_self = true
+
+[node name="Entities" type="Node2D" parent="Surface"]
+
+[node name="Ladder" parent="Surface" instance=ExtResource( 9 )]
+position = Vector2( 40, 56 )
+texture = null
+
+[node name="Ladder2" parent="Surface" instance=ExtResource( 9 )]
+position = Vector2( 48, 56 )
+texture = null
 
 [node name="Floor" type="Node2D" parent="."]
-position = Vector2( 24, 16 )
+visible = false
+position = Vector2( 32, 24 )
 script = ExtResource( 1 )
+
+[node name="BgTileMap" type="TileMap" parent="Floor"]
+tile_set = SubResource( 1 )
+cell_size = Vector2( 8, 8 )
+format = 1
+tile_data = PoolIntArray( -1, 4, 196609, -65536, 4, 3, -65535, 4, 3, -65534, 4, 3, -65533, 4, 3, -65532, 4, 0, 65535, 4, 1, 0, 4, 65539, 1, 4, 131073, 2, 4, 131074, 3, 4, 65538, 4, 4, 131075, 131071, 4, 1, 65536, 4, 131075, 65538, 4, 1, 65539, 4, 65538, 65540, 4, 131075, 196607, 4, 1, 131072, 4, 2, 131073, 4, 3, 131074, 4, 65537, 131075, 4, 65538, 131076, 4, 131075, 262143, 4, 1, 196608, 4, 65538, 196609, 4, 65538, 196610, 4, 65538, 196611, 4, 65538, 196612, 4, 131075, 327679, 4, 131072, 262144, 4, 131073, 262145, 4, 131073, 262146, 4, 131073, 262147, 4, 131073, 262148, 4, 196611 )
 
 [node name="TileMap" type="TileMap" parent="Floor"]
 tile_set = SubResource( 1 )
@@ -163,79 +598,167 @@ region_rect = Rect2( 14, 30, 28, 28 )
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="ResourceLabel" type="Label" parent="UI"]
+[node name="BottomHud" type="ColorRect" parent="UI"]
+anchor_top = 1.0
 anchor_right = 1.0
-margin_bottom = 13.0
-theme = ExtResource( 13 )
-text = "Treasure: 00/00"
-align = 1
+anchor_bottom = 1.0
+margin_top = -16.0
+color = Color( 0.168627, 0.145098, 0.168627, 1 )
 
-[node name="FighterUI" type="Node2D" parent="UI"]
-position = Vector2( 0, 48 )
+[node name="FighterUI" type="Node2D" parent="UI/BottomHud"]
 
-[node name="Sprite" type="Sprite" parent="UI/FighterUI"]
-position = Vector2( 8, 0 )
+[node name="Sprite" type="Sprite" parent="UI/BottomHud/FighterUI"]
 texture = ExtResource( 2 )
 centered = false
 region_enabled = true
 region_rect = Rect2( 48, 8, 8, 8 )
 
-[node name="HealthBar" type="Node2D" parent="UI/FighterUI"]
-position = Vector2( 0, 8 )
+[node name="HealthBar" type="Node2D" parent="UI/BottomHud/FighterUI"]
+position = Vector2( 8, 0 )
 script = ExtResource( 4 )
 heart_color = Color( 0.482353, 0.729412, 0.45098, 1 )
 
-[node name="HealthBarHeart" parent="UI/FighterUI/HealthBar" instance=ExtResource( 5 )]
+[node name="HealthBarHeart" parent="UI/BottomHud/FighterUI/HealthBar" instance=ExtResource( 5 )]
 modulate = Color( 0.482353, 0.729412, 0.45098, 1 )
 
-[node name="HealthBarHeart2" parent="UI/FighterUI/HealthBar" instance=ExtResource( 5 )]
+[node name="HealthBarHeart2" parent="UI/BottomHud/FighterUI/HealthBar" instance=ExtResource( 5 )]
 modulate = Color( 0.482353, 0.729412, 0.45098, 1 )
 position = Vector2( 7, 0 )
 
-[node name="HealthBarHeart3" parent="UI/FighterUI/HealthBar" instance=ExtResource( 5 )]
+[node name="HealthBarHeart3" parent="UI/BottomHud/FighterUI/HealthBar" instance=ExtResource( 5 )]
 modulate = Color( 0.482353, 0.729412, 0.45098, 1 )
 position = Vector2( 14, 0 )
 
-[node name="Label" type="Label" parent="UI/FighterUI"]
-margin_top = 11.0
-margin_right = 24.0
-margin_bottom = 21.0
+[node name="KeySprite" type="Sprite" parent="UI/BottomHud/FighterUI"]
+modulate = Color( 0.596078, 0.541176, 0.627451, 1 )
+position = Vector2( 20, 8 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 56, 16, 8, 8 )
+
+[node name="Label" type="Label" parent="UI/BottomHud/FighterUI"]
+margin_left = 1.0
+margin_top = 3.0
+margin_right = 22.0
+margin_bottom = 16.0
 text = "wasd"
-align = 1
 
-[node name="ThiefUI" type="Node2D" parent="UI"]
-position = Vector2( 56, 48 )
+[node name="ThiefUI" type="Node2D" parent="UI/BottomHud"]
+position = Vector2( 88, 0 )
 
-[node name="Sprite" type="Sprite" parent="UI/ThiefUI"]
-position = Vector2( 8, 0 )
+[node name="Sprite" type="Sprite" parent="UI/BottomHud/ThiefUI"]
 texture = ExtResource( 2 )
 centered = false
 region_enabled = true
 region_rect = Rect2( 64, 8, 8, 8 )
 
-[node name="HealthBar" type="Node2D" parent="UI/ThiefUI"]
-position = Vector2( 15, 8 )
+[node name="HealthBar" type="Node2D" parent="UI/BottomHud/ThiefUI"]
+position = Vector2( -8, 0 )
 script = ExtResource( 4 )
 heart_width = -7
 heart_color = Color( 0.741176, 0.34902, 0.870588, 1 )
 
-[node name="HealthBarHeart" parent="UI/ThiefUI/HealthBar" instance=ExtResource( 5 )]
+[node name="HealthBarHeart" parent="UI/BottomHud/ThiefUI/HealthBar" instance=ExtResource( 5 )]
 modulate = Color( 0.741176, 0.34902, 0.870588, 1 )
 
-[node name="HealthBarHeart2" parent="UI/ThiefUI/HealthBar" instance=ExtResource( 5 )]
+[node name="HealthBarHeart2" parent="UI/BottomHud/ThiefUI/HealthBar" instance=ExtResource( 5 )]
 modulate = Color( 0.741176, 0.34902, 0.870588, 1 )
 position = Vector2( -7, 0 )
 
-[node name="HealthBarHeart3" parent="UI/ThiefUI/HealthBar" instance=ExtResource( 5 )]
+[node name="HealthBarHeart3" parent="UI/BottomHud/ThiefUI/HealthBar" instance=ExtResource( 5 )]
 modulate = Color( 0.741176, 0.34902, 0.870588, 1 )
 position = Vector2( -14, 0 )
 
-[node name="Label" type="Label" parent="UI/ThiefUI"]
-margin_top = 11.0
-margin_right = 24.0
+[node name="KeySprite" type="Sprite" parent="UI/BottomHud/ThiefUI"]
+modulate = Color( 0.596078, 0.541176, 0.627451, 1 )
+position = Vector2( -14, 8 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 56, 16, 8, 8 )
+
+[node name="Label" type="Label" parent="UI/BottomHud/ThiefUI"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -24.0
+margin_top = 3.0
+margin_right = 8.0
 margin_bottom = 16.0
 text = "ijkl"
-align = 1
+align = 2
+
+[node name="TopHud" type="ColorRect" parent="UI"]
+anchor_right = 1.0
+margin_bottom = 8.0
+color = Color( 0.168627, 0.145098, 0.168627, 1 )
+
+[node name="TreasureSprite" type="Sprite" parent="UI/TopHud"]
+position = Vector2( 32, 0 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 16, 24, 8, 8 )
+
+[node name="ResourceLabel" type="Label" parent="UI/TopHud"]
+anchor_right = 1.0
+margin_left = 42.0
+margin_top = -4.0
+margin_right = 54.0
+margin_bottom = 9.0
+theme = ExtResource( 13 )
+custom_colors/font_color = Color( 1, 0.678431, 0.388235, 1 )
+text = "00/00"
+
+[node name="FighterEquipment" type="Node2D" parent="UI/TopHud"]
+script = ExtResource( 7 )
+
+[node name="Shield" type="Sprite" parent="UI/TopHud/FighterEquipment"]
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 32, 24, 8, 8 )
+
+[node name="FighterBoots" type="Sprite" parent="UI/TopHud/FighterEquipment"]
+position = Vector2( 7, 0 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 40, 24, 8, 8 )
+
+[node name="Hammer" type="Sprite" parent="UI/TopHud/FighterEquipment"]
+position = Vector2( 14, 0 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 48, 24, 8, 8 )
+
+[node name="ThiefEquipment" type="Node2D" parent="UI/TopHud"]
+position = Vector2( 96, 0 )
+script = ExtResource( 7 )
+
+[node name="Pendant" type="Sprite" parent="UI/TopHud/ThiefEquipment"]
+position = Vector2( -8, 0 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 56, 24, 8, 8 )
+
+[node name="Gloves" type="Sprite" parent="UI/TopHud/ThiefEquipment"]
+position = Vector2( -16, 0 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 72, 24, 8, 8 )
+
+[node name="ThiefBoots" type="Sprite" parent="UI/TopHud/ThiefEquipment"]
+position = Vector2( -24, 0 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 64, 24, 8, 8 )
 
 [node name="TreasureMessage" type="Panel" parent="UI" groups=["popups"]]
 visible = false
@@ -244,14 +767,16 @@ anchor_bottom = 1.0
 margin_left = 8.0
 margin_top = 16.0
 margin_right = -8.0
-margin_bottom = -8.0
+margin_bottom = -24.0
 theme = ExtResource( 13 )
 
 [node name="Label" type="Label" parent="UI/TreasureMessage"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 4.0
+margin_right = -4.0
 custom_colors/font_color = Color( 1, 0.678431, 0.388235, 1 )
-text = "Max treasure collected!"
+text = "Your bag is full of treasure!"
 align = 1
 autowrap = true
 
@@ -273,9 +798,9 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
-margin_top = 4.0
+margin_top = 16.0
 margin_right = -8.0
-margin_bottom = -20.0
+margin_bottom = -24.0
 theme = ExtResource( 13 )
 
 [node name="Label" type="Label" parent="UI/HealthMessage"]
@@ -283,6 +808,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
 margin_right = -8.0
+custom_colors/font_color = Color( 1, 0.678431, 0.388235, 1 )
 text = "Ran out of health!"
 align = 1
 autowrap = true
@@ -307,7 +833,7 @@ anchor_bottom = 1.0
 margin_left = 8.0
 margin_top = 16.0
 margin_right = -8.0
-margin_bottom = -20.0
+margin_bottom = -24.0
 theme = ExtResource( 13 )
 
 [node name="Label" type="Label" parent="UI/EscapeMessage"]
@@ -315,27 +841,49 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
 margin_right = -4.0
+margin_bottom = -24.0
+custom_colors/font_color = Color( 1, 0.678431, 0.388235, 1 )
 text = "Surface now?"
 align = 1
+valign = 1
 autowrap = true
 
 [node name="YesButton" type="Button" parent="UI/EscapeMessage"]
-margin_left = 4.0
-margin_top = 16.0
-margin_right = 30.0
-margin_bottom = 31.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = -24.0
+margin_right = 36.0
+margin_bottom = -8.0
 shortcut_in_tooltip = false
 shortcut = SubResource( 12 )
 text = "Yes"
 
 [node name="NoButton" type="Button" parent="UI/EscapeMessage"]
-margin_left = 32.0
-margin_top = 16.0
-margin_right = 60.0
-margin_bottom = 31.0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -36.0
+margin_top = -24.0
+margin_right = -8.0
+margin_bottom = -8.0
 shortcut_in_tooltip = false
 shortcut = SubResource( 10 )
 text = "No"
+
+[node name="Fader" type="ColorRect" parent="UI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.168627, 0.145098, 0.168627, 0.2 )
+
+[node name="Transition" type="AnimationPlayer" parent="UI/Fader"]
+anims/fadein = SubResource( 16 )
+anims/fadeout = SubResource( 17 )
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+autoplay = true
 
 [connection signal="pressed" from="UI/TreasureMessage/Button" to="." method="_on_SurfaceButton_pressed"]
 [connection signal="pressed" from="UI/HealthMessage/Button" to="." method="_on_SurfaceButton_pressed"]

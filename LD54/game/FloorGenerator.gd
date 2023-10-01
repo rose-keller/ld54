@@ -7,7 +7,7 @@ var tilesize = 8
 var entrance_res = "Marker"
 var exit_res = "Ladder"
 var obstacle_res = {"Slime": 2, "Ball": 2, "Spikes": 1, "Hole": 0}
-var treasure_res = {"Chest": 3, "Heart": 0}
+var treasure_res = {"Chest": 3, "Heart": 1}
 
 onready var game = $"/root/Game"
 onready var tilemap = $TileMap
@@ -18,22 +18,28 @@ var heroes = []
 var entrance_coord = Vector2(0, -1)
 var exit_coord = Vector2(floor_width - 1, floor_height)
 
-func generate_floor(hero_order, start_coords):
-	print("-- generate floor -- ",hero_order)
+func reset():
 	for entity in $Entities.get_children():
 		entity.queue_free()
 	heroes.clear()
+	visible = false
 	
+func generate_floor(hero_order, start_coords, level):
+	reset()
+	visible = true
+	
+	print("-- generate floor -- ",hero_order)
 	generate_tiles(start_coords)
 	
 	unused_sides = range(4)
 	generate_heroes(hero_order, start_coords)
 	generate_exits()
 	
+	var obstacle_count = 3 if level < 3 else randi_range(4,5)
 	generate_entities(treasure_res, randi_range(1, 2), true)#randi_range(1, 2))
 	generate_entities({"Rock":1}, randi_range(1, 1))#randi_range(1, 2))
 	generate_entities({"Hole":1}, 1)#randi_range(1, 2))
-	generate_entities(obstacle_res, randi_range(4, 5), true) #randi_range(3, 4))
+	generate_entities(obstacle_res, obstacle_count, true) #randi_range(3, 4))
 	
 	entities_by_coord.clear()
 
@@ -101,6 +107,14 @@ func generate_tiles(start_coords):
 #	for y in range(floor_height):
 #		tilemap.set_cell(-1, y, 2)
 #		tilemap.set_cell(floor_width, y, 2)
+
+	#5
+	for x in range(-3, floor_width + 3):
+		for y in range(-3, floor_height + 3):
+			var in_bounds = x >= -1 and x <= floor_width \
+				and y >= -1 and y <= floor_height
+			if not in_bounds and randi() % 10 == 0:
+				tilemap.set_cell(x, y, 5)
 
 	if start_coords:
 		for coord in start_coords:

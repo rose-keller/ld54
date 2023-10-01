@@ -15,3 +15,7 @@ script = ExtResource( 3 )
 script = ExtResource( 2 )
 gives = "Gold"
 remove_self = true
+
+[node name="Interaction_Hammer" type="Node" parent="."]
+script = ExtResource( 2 )
+remove_self = true

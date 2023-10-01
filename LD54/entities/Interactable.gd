@@ -1,5 +1,7 @@
 extends Node
 
+class_name Interactable
+
 signal finish_step
 
 export var blocking = true
@@ -15,6 +17,8 @@ var is_blocked = false
 var target_interactable
 var removed_soon = false
 var dead = false
+
+var remove_on_bounce = false
 
 func _ready():
 	add_to_group("interactable")
@@ -48,6 +52,7 @@ func start_interaction(actor):
 	var interaction = get_interaction(actor)
 	if interaction:
 		interaction.start(actor)
+	return interaction
 
 func trigger_interaction(actor):
 	var interaction = get_interaction(actor)
@@ -64,7 +69,7 @@ func will_remove(actor):
 	return interaction and interaction.remove_actor
 
 
-func start_step(step):
+func start_step(step, try_remove_on_bounce = false):
 	step_time = 0
 	current_coord = game.get_coord(self)
 	target_coord = current_coord + step
@@ -75,12 +80,16 @@ func start_step(step):
 	
 	removed_soon = false
 	var entity = game.get_entity(target_coord)
+	var has_interaction = false
 	if entity and entity.visible and not entity.removed_soon:
 		target_interactable = entity
-		entity.start_interaction(self)
+		has_interaction = entity.start_interaction(self)
 		removed_soon = entity.will_remove(self)
 		if entity.blocks(self):
 			is_blocked = true
+
+	print("remove on bounce? %s, is_blocked: %s, interactable: %s" % [try_remove_on_bounce, is_blocked, has_interaction])
+	remove_on_bounce = try_remove_on_bounce and is_blocked and not has_interaction
 
 
 func _process(delta):
@@ -106,7 +115,17 @@ func _process(delta):
 			current_coord = game.get_coord(self)
 			target_coord = current_coord
 			removed_soon = false
+			
+			if remove_on_bounce:
+				game.remove(self)
 
 
 func is_busy():
 	return target_coord != current_coord
+
+
+func take_damage():
+	if has_node("AnimationPlayer"):
+		$AnimationPlayer.play("damage")
+		for i in range(2):
+			$AnimationPlayer.queue("damage")

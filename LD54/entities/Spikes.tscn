@@ -4,7 +4,7 @@
 [ext_resource path="res://entities/Interactable.gd" type="Script" id=2]
 [ext_resource path="res://entities/Interaction.gd" type="Script" id=3]
 
-[node name="Slime" type="Sprite"]
+[node name="Spikes" type="Sprite"]
 texture = ExtResource( 1 )
 centered = false
 region_enabled = true

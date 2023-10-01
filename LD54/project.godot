@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node",
+"class": "Interactable",
+"language": "GDScript",
+"path": "res://entities/Interactable.gd"
+} ]
+_global_script_class_icons={
+"Interactable": ""
+}
+
 [application]
 
 config/name="LD54"
@@ -20,12 +30,12 @@ IntegerResolutionHandler="*res://addons/integer_resolution_handler/integer_resol
 
 [display]
 
-window/integer_resolution_handler/base_width=80
-window/integer_resolution_handler/base_height=72
-window/size/width=80
-window/size/height=72
+window/integer_resolution_handler/base_width=96
+window/integer_resolution_handler/base_height=88
+window/size/width=96
+window/size/height=88
 window/size/test_width=480
-window/size/test_height=432
+window/size/test_height=440
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 

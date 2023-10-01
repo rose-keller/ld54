@@ -5,34 +5,31 @@ var tile_size = 8
 
 var step_time = 0
 var step_duration = 0.3
+var reset_input = false
 
+onready var surface = $Surface
 onready var floor_gen = $Floor
 onready var popups = get_tree().get_nodes_in_group("popups")
 
-var fighter
-var thief
 var entering_heroes
 var hero_order = []
 var start_coords = []
 
 var level = 1
 var stats = {"Gold": 0,
-			"MaxGold": 5,
+			"MaxGold": 10,
 			"Heart_Fighter": 0, "MaxHealth_Fighter": 6,
-			"Heart_Thief": 0, "MaxHealth_Thief": 2}
-
+			"Heart_Thief": 0, "MaxHealth_Thief": 4}
+var equipment = []
 
 func _ready():
 	randomize()
-	restart()
-
-func win():
-	stats.MaxHealth_Fighter += 2
-	stats.MaxHealth_Thief += 2
-	stats.MaxGold += 10
+	restart_game()
+	escape(false)
+	#descend()
 
 
-func restart():
+func restart_game():
 	for popup in popups:
 		popup.visible = false
 	
@@ -41,10 +38,37 @@ func restart():
 	stats.Heart_Thief = stats.MaxHealth_Thief
 	stats.Gold = 0
 	update_ui()
-	descend()
 
 
-func descend():
+func escape(transition = true):
+	for popup in popups:
+		popup.visible = false
+	reset_input = true
+	
+	if transition:
+		$UI/Fader/Transition.play("fadein")
+		yield($UI/Fader/Transition, "animation_finished")
+		$UI/Fader/Transition.play("fadeout")
+	
+	level = 0
+	floor_gen.reset()
+	surface.restart(["HeroFighter", "HeroThief"])
+	
+	stats.Heart_Fighter = stats.MaxHealth_Fighter
+	stats.Heart_Thief = stats.MaxHealth_Thief
+	update_ui()
+
+
+func descend(transition = true):
+	reset_input = true
+	
+	if transition:
+		$UI/Fader/Transition.play("fadein")
+		yield($UI/Fader/Transition, "animation_finished")
+		$UI/Fader/Transition.play("fadeout")
+	
+	surface.reset()
+	
 	var hero_order = []
 	if stats.Heart_Fighter > 0:
 		hero_order.append("HeroFighter")
@@ -58,12 +82,10 @@ func descend():
 	level += 1
 	update_ui()
 	
-	entering_heroes = floor_gen.generate_floor(hero_order, start_coords)
+	entering_heroes = floor_gen.generate_floor(hero_order, start_coords, level)
 	for hero in entering_heroes:
-		if "Fighter" in hero.name:
-			fighter = hero
-		if "Thief" in hero.name:
-			thief = hero
+		if "Fighter" in hero.name and "Hammer" in equipment:
+			hero.tags.insert(0, "Hammer")
 		hero.add_to_group("heroes")
 		hero.connect("finish_step", self, "update_hero_entrances")
 	var first_hero = entering_heroes.pop_front()
@@ -92,6 +114,10 @@ func _input(event):
 	
 	if event.is_action_released("accept") or event.is_action_released("cancel"):
 		$UI/EscapeMessage.visible = true
+		
+	for dir in dirs:
+		if event.is_action_pressed(dir) or event.is_action_pressed(dir+"2"):
+			reset_input = false
 #	elif event.is_action_pressed("b"):
 #		switch_hero()
 
@@ -105,6 +131,8 @@ func _input(event):
 
 
 func _process(delta):
+	if reset_input: return
+
 	for popup in popups:
 		if popup.visible: return
 	
@@ -119,7 +147,7 @@ func _process(delta):
 func get_entity(coord):
 	var entities = get_tree().get_nodes_in_group("interactable")
 	for entity in entities:
-		if get_coord(entity) == coord and entity.visible:
+		if get_coord(entity) == coord and not entity.dead and entity.is_visible_in_tree():
 			return entity
 
 
@@ -149,17 +177,23 @@ func remove(entity):
 
 
 func is_blocked(coord):
-	if not floor_gen.is_in_bounds(coord):
+	if floor_gen.visible and not floor_gen.is_in_bounds(coord):
+		return true
+	elif surface.visible and not surface.is_in_bounds(coord):
 		return true
 	return false
 
 
 func try_push(actor, target):
+	var using_gloves = "Gloves" in equipment and "Thief" in actor.name \
+		and "Ball" in target.name
+	if using_gloves: print("Applying gloves")
+	
 	var actor_coord = get_coord(actor)
 	var target_coord = get_coord(target)
 	var step = target_coord - actor_coord
 	#var corner_step = floor_gen.try_get_corner_step(target_coord, step)
-	target.start_step(step)#corner_step if corner_step else step)
+	target.start_step(step, using_gloves) #corner_step if corner_step else step)
 
 
 func get_resource_key(actor, resource):
@@ -174,16 +208,38 @@ func get_resource_key(actor, resource):
 
 
 func has_resource(actor, resource, amount):
-	return true
-#	var key = get_resource_key(actor, resource)
-#	return key and stats[key] >= amount
-
-
-func spend_resource(actor, resource, amount):
 	var key = get_resource_key(actor, resource)
-	print("spend resource %s for %s => %s" % [resource, actor, key])
+	return key and stats[key] >= amount
+
+
+func adjust_resource_cost(key, amount, source):
+	if key == "Heart_Fighter":
+		if "FighterBoots" in equipment and ("Spikes" in source or "Hole" in source):
+			print("Applying FighterBoots")
+			return floor(amount / 2)
+		if "Shield" in equipment and "Slime" in source:
+			print("Applying Shield")
+			return 0
+	
+	elif key == "Heart_Thief":
+		if "ThiefBoots" in equipment and ("Spikes" in source or "Hole" in source):
+			print("Applying ThiefBoots")
+			return floor(amount / 2)
+
+	return amount
+
+func spend_resource(actor, resource, amount, source):
+	var key = get_resource_key(actor, resource)
 	if key:
-		print("-",amount," ",key)
+		amount = adjust_resource_cost(key, amount, source.name)
+		
+		print("-%d %s (%s)" % [amount,key, source.name])
+		
+		if key == "Heart_Fighter":
+			on_take_damage("Fighter")
+		elif key == "Heart_Thief":
+			on_take_damage("Thief")
+		
 		stats[key] -= amount
 		update_ui()
 		
@@ -193,27 +249,49 @@ func spend_resource(actor, resource, amount):
 			remove(actor)
 
 
-func gain_resource(actor, resource, amount):
+func on_take_damage(name):
+	for hero in get_tree().get_nodes_in_group("heroes"):
+		if name in hero.name:
+			hero.take_damage()
+
+func adjust_resource_gain(key, amount, source):
+	if key == "Gold" and "Pendant" in equipment and "Chest" in source:
+		print("Applying Pendant")
+		return amount * 2
+
+	return amount
+
+
+func gain_resource(actor, resource, amount, source):
 	var key = get_resource_key(actor, resource)
 	if key:
-		print("+",amount," ",key)
+		amount = adjust_resource_gain(key, amount, source.name)
+		print("+%d %s (%s)" % [amount, key, source.name])
 		stats[key] += amount
 		
 		stats.Heart_Fighter = min(stats.Heart_Fighter, stats.MaxHealth_Fighter)
 		stats.Heart_Thief = min(stats.Heart_Thief, stats.MaxHealth_Thief)
 		stats.Gold = min(stats.Gold, stats.MaxGold)
 		
+		if resource == "MaxHealth":
+			gain_resource(actor, "Heart", amount, source)
+			
 		update_ui()
 		
-		if stats.Gold >= stats.MaxGold:
+		if stats.Gold >= stats.MaxGold and floor_gen.visible:
 			$UI/TreasureMessage.visible = true
-			win()
 
+
+func equip(equipment_name):
+	equipment.append(equipment_name)
+	update_ui()
 
 func update_ui():
-	$UI/FighterUI/HealthBar.set(stats.Heart_Fighter, stats.MaxHealth_Fighter)
-	$UI/ThiefUI/HealthBar.set(stats.Heart_Thief, stats.MaxHealth_Thief)
-	$UI/ResourceLabel.text = "Treasure: %d/%d" % [stats.Gold, stats.MaxGold]
+	$UI/BottomHud/FighterUI/HealthBar.set(stats.Heart_Fighter, stats.MaxHealth_Fighter)
+	$UI/BottomHud/ThiefUI/HealthBar.set(stats.Heart_Thief, stats.MaxHealth_Thief)
+	$UI/TopHud/ResourceLabel.text = "%02d/%02d" % [stats.Gold, stats.MaxGold]
+	$UI/TopHud/FighterEquipment.show_equipment(equipment)
+	$UI/TopHud/ThiefEquipment.show_equipment(equipment)
 
 
 func get_coord(entity):
@@ -224,7 +302,7 @@ func set_coord(entity, coord):
 
 
 func _on_SurfaceButton_pressed():
-	restart()
+	escape()
 
 
 func _on_CancelButton_pressed():

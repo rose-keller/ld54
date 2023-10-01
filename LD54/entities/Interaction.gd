@@ -3,10 +3,11 @@ extends Node
 enum MovementType { Block, Overlap, Pushed }
 
 export(MovementType) var movement
-export(String, "", "Heart", "Key") var consumes
+export(String, "", "Heart", "Gold") var consumes
 export var consume_amount = 1
-export(String, "", "Heart", "Key", "Gold") var gives
+export(String, "", "Heart", "Gold", "MaxHealth", "MaxGold") var gives
 export var give_amount = 1
+export var give_equipment = false
 export var remove_self = false
 export var remove_actor = false
 
@@ -33,11 +34,18 @@ func trigger(actor):
 
 
 func resolve(actor):
-	game.spend_resource(actor, consumes, consume_amount)
-	game.gain_resource(actor, gives, give_amount)
+	var parent = get_parent()
+	game.spend_resource(actor, consumes, consume_amount, parent)
+	game.gain_resource(actor, gives, give_amount, parent)
+	
+	if give_equipment:
+		game.equip(parent.name)
 	
 	if remove_self:
-		game.remove(get_parent())
+		game.remove(parent)
 		
 	if remove_actor:
 		game.remove(actor)
+	
+	if "use_count" in parent:
+		parent.use_count += 1
