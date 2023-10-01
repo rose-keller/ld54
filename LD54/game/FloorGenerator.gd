@@ -1,65 +1,73 @@
 extends Node2D
 
 export var floor_width = 4
-export var floor_height = 3
+export var floor_height = 4
 var tilesize = 8
 
-var hero_res = "Hero1"
 var entrance_res = "Marker"
 var exit_res = "Ladder"
-var obstacle_res = {"Slime": 2, "Ball": 2, "Hole": 1}
-var treasure_res = {"Chest": 3, "Heart": 1}
+var obstacle_res = {"Slime": 2, "Ball": 2, "Spikes": 1, "Hole": 0}
+var treasure_res = {"Chest": 3, "Heart": 0}
 
 onready var game = $"/root/Game"
 onready var tilemap = $TileMap
 var entities_by_coord = {}
-var hero
-var prev_exit_coord
+var unused_sides = []
+var heroes = []
 
-func generate_floor(exit_coord):
-	prev_exit_coord = exit_coord
-	
+var entrance_coord = Vector2(0, -1)
+var exit_coord = Vector2(floor_width - 1, floor_height)
+
+func generate_floor(hero_order, start_coords):
+	print("-- generate floor -- ",hero_order)
 	for entity in $Entities.get_children():
 		entity.queue_free()
+	heroes.clear()
 	
-	generate_tiles()
+	generate_tiles(start_coords)
+	
+	unused_sides = range(4)
+	generate_heroes(hero_order, start_coords)
 	generate_exits()
-	generate_entities(treasure_res, 1, true)#randi_range(1, 2))
-	generate_entities({"Rock":1}, 1)#randi_range(1, 2))
-	generate_entities(obstacle_res, 3, true) #randi_range(3, 4))
+	
+	generate_entities(treasure_res, randi_range(1, 2), true)#randi_range(1, 2))
+	generate_entities({"Rock":1}, randi_range(1, 1))#randi_range(1, 2))
+	generate_entities({"Hole":1}, 1)#randi_range(1, 2))
+	generate_entities(obstacle_res, randi_range(4, 5), true) #randi_range(3, 4))
 	
 	entities_by_coord.clear()
 
-	$Entities.move_child(hero, $Entities.get_child_count())
-	return hero
+	for hero in heroes:
+		$Entities.move_child(hero, $Entities.get_child_count())
+	return heroes
+
+
+func generate_heroes(hero_order, start_coords):
+	for i in range(hero_order.size()):
+		var side = unused_sides.pop_at(randi() % unused_sides.size())
+		var coord = get_coord_on_side(side)
+		var hero = spawn(hero_order[i], coord)#start_coords[i])
+		heroes.append(hero)
 
 
 func generate_exits():
-	var entrance_coord
-	var entrance_side
-	if prev_exit_coord:
-		entrance_coord = prev_exit_coord
-		entrance_side = get_side_of_coord(entrance_coord)
-	else:
-		entrance_side = randi() % 4
-		entrance_coord = get_coord_on_side(entrance_side)
-	
-	#spawn(entrance_res, entrance_coord)
-	hero = spawn(hero_res, entrance_coord)
-
-	var exit_side = (entrance_side + 2) % 4
-	var exit_coord = get_coord_on_side(exit_side)
-	spawn(exit_res, exit_coord)
+	var exit_side = unused_sides.pop_at(randi() % unused_sides.size())
+	for n in range(100):
+		var exit_coord = get_coord_on_side(exit_side)
+		if not exit_coord in entities_by_coord:
+			spawn(exit_res, exit_coord)
+			break
 
 
 func generate_entities(resource_weights, count, avoid_repeats = false):
 	var bucket = []
 	for n in range(count):
 		if not bucket:
+			if not resource_weights:
+				return
 			for key in resource_weights:
 				for m in (resource_weights[key]):
 					bucket.append(key)
-			print(bucket)
 		
 		var i = randi() % bucket.size()
 		var resource = bucket[i]
@@ -74,7 +82,8 @@ func generate_entities(resource_weights, count, avoid_repeats = false):
 
 
 func spawn(name, coord):
-	var resource = load("res://entities/%s.tscn" % name)
+	var path = name if name.begins_with("res:") else "res://entities/%s.tscn" % name
+	var resource = load(path)
 	var entity = resource.instance()
 	$Entities.add_child(entity)
 	entity.add_to_group("entities")
@@ -83,7 +92,7 @@ func spawn(name, coord):
 	return entity
 
 
-func generate_tiles():
+func generate_tiles(start_coords):
 	tilemap.clear()
 #	for x in range(-1, floor_width + 1, 1):
 #		tilemap.set_cell(x, -1, 2)
@@ -91,10 +100,22 @@ func generate_tiles():
 #	for y in range(floor_height):
 #		tilemap.set_cell(-1, y, 2)
 #		tilemap.set_cell(floor_width, y, 2)
+
+	if start_coords:
+		for coord in start_coords:
+			tilemap.set_cellv(coord, get_cell(coord.x, coord.y))
+	#tilemap.set_cellv(entrance_coord, get_cell(entrance_coord.x, entrance_coord.y))
+	#tilemap.set_cellv(exit_coord, get_cell(exit_coord.x, exit_coord.y))
 	
 	for x in range(floor_width):
 		for y in range(floor_height):
-			tilemap.set_cell(x, y, 1 if (x + y) % 2 else 3)
+			tilemap.set_cell(x, y, get_cell(x, y))
+
+func get_cell(x, y):
+	if int(x + y) % 2:
+		return 1
+	else:
+		return 3
 
 
 func is_in_bounds(coord):

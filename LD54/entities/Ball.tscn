@@ -10,8 +10,12 @@ centered = false
 region_enabled = true
 region_rect = Rect2( 40, 0, 8, 8 )
 script = ExtResource( 2 )
-tag = "Ball"
+tags = [ "Ball" ]
 
 [node name="Interaction_Hero" type="Node" parent="."]
+script = ExtResource( 3 )
+movement = 2
+
+[node name="Interaction_Ball" type="Node" parent="."]
 script = ExtResource( 3 )
 movement = 2

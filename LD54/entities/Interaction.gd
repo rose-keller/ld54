@@ -4,7 +4,9 @@ enum MovementType { Block, Overlap, Pushed }
 
 export(MovementType) var movement
 export(String, "", "Heart", "Key") var consumes
+export var consume_amount = 1
 export(String, "", "Heart", "Key", "Gold") var gives
+export var give_amount = 1
 export var remove_self = false
 export var remove_actor = false
 
@@ -15,8 +17,8 @@ func blocks():
 	return movement != MovementType.Overlap
 
 
-func can_interact():
-	return not consumes or game.has_resource(consumes)
+func can_interact(actor):
+	return not consumes or game.has_resource(actor, consumes, consume_amount)
 
 
 func start(actor):
@@ -31,8 +33,8 @@ func trigger(actor):
 
 
 func resolve(actor):
-	game.spend_resource(consumes)
-	game.gain_resource(gives)
+	game.spend_resource(actor, consumes, consume_amount)
+	game.gain_resource(actor, gives, give_amount)
 	
 	if remove_self:
 		game.remove(get_parent())

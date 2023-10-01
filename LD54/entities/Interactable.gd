@@ -1,7 +1,9 @@
 extends Node
 
+signal finish_step
+
 export var blocking = true
-export var tag = ""
+export(Array, String) var tags = []
 
 onready var game = $"/root/Game"
 
@@ -12,6 +14,7 @@ var step_duration = 0.3
 var is_blocked = false
 var target_interactable
 var removed_soon = false
+var dead = false
 
 func _ready():
 	add_to_group("interactable")
@@ -33,10 +36,11 @@ func blocks(actor):
 
 
 func get_interaction(actor):
-	if "tag" in actor:
-		var interaction_node = get_node_or_null("Interaction_"+actor.tag)
-		if interaction_node and interaction_node.can_interact():
-			return interaction_node
+	if "tags" in actor:
+		for tag in actor.tags:
+			var interaction_node = get_node_or_null("Interaction_"+tag)
+			if interaction_node and interaction_node.can_interact(actor):
+				return interaction_node
 	return null
 
 
@@ -66,9 +70,12 @@ func start_step(step):
 	target_coord = current_coord + step
 	is_blocked = game.is_blocked(target_coord)
 	
+	# pop whoever's moving to the front
+	get_parent().move_child(self, get_parent().get_child_count() - 1)
+	
 	removed_soon = false
 	var entity = game.get_entity(target_coord)
-	if entity and not entity.removed_soon:
+	if entity and entity.visible and not entity.removed_soon:
 		target_interactable = entity
 		entity.start_interaction(self)
 		removed_soon = entity.will_remove(self)
@@ -90,6 +97,9 @@ func _process(delta):
 			game.set_coord(self, lerp(current_coord, target_coord, d))
 
 		else:
+			if not is_blocked:
+				emit_signal("finish_step")
+			
 			if target_interactable and target_interactable.has_method("resolve_interaction"):
 				target_interactable.resolve_interaction(self)
 			target_interactable = null

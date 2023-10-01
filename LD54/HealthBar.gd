@@ -1,7 +1,8 @@
 extends Node2D
 
+export var heart_width = 7
+export(Color) var heart_color
 var heart_res = preload("res://ui/HealthBarHeart.tscn")
-var heart_width = 8
 
 func set(current_health, max_health):
 	var i = 0
@@ -11,6 +12,7 @@ func set(current_health, max_health):
 			heart = heart_res.instance()
 			add_child(heart)
 			heart.position.x = i * heart_width
+			heart.modulate = heart_color
 		heart.visible = true
 		heart.play("full" if i < current_health else "empty")
 		i += 1

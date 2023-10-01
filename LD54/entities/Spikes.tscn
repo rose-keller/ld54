@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://art1.png" type="Texture" id=1]
+[ext_resource path="res://entities/Interactable.gd" type="Script" id=2]
+[ext_resource path="res://entities/Interaction.gd" type="Script" id=3]
+
+[node name="Slime" type="Sprite"]
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 64, 0, 8, 8 )
+script = ExtResource( 2 )
+
+[node name="Interaction_Hero" type="Node" parent="."]
+script = ExtResource( 3 )
+movement = 1
+consumes = "Heart"
+remove_self = true
+
+[node name="Interaction_Ball" type="Node" parent="."]
+script = ExtResource( 3 )
+movement = 1
+remove_self = true

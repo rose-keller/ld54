@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://game/FloorGenerator.gd" type="Script" id=1]
 [ext_resource path="res://art1.png" type="Texture" id=2]
@@ -109,6 +109,18 @@ points = PoolVector2Array( 0, 0, 8, 0, 8, 8, 0, 8 )
 4/shapes = [  ]
 4/z_index = 0
 
+[sub_resource type="InputEventAction" id=6]
+action = "a"
+
+[sub_resource type="ShortCut" id=5]
+shortcut = SubResource( 6 )
+
+[sub_resource type="InputEventAction" id=7]
+action = "a"
+
+[sub_resource type="ShortCut" id=8]
+shortcut = SubResource( 7 )
+
 [node name="Game" type="Node"]
 script = ExtResource( 12 )
 
@@ -118,7 +130,7 @@ margin_bottom = 144.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="Floor" type="Node2D" parent="."]
-position = Vector2( 24, 24 )
+position = Vector2( 24, 16 )
 script = ExtResource( 1 )
 
 [node name="TileMap" type="TileMap" parent="Floor"]
@@ -146,11 +158,72 @@ theme = ExtResource( 13 )
 text = "Treasure: 00/00"
 align = 1
 
-[node name="HealthBar" type="Node2D" parent="UI"]
-position = Vector2( 20, 56 )
-script = ExtResource( 4 )
+[node name="FighterUI" type="Node2D" parent="UI"]
+position = Vector2( 0, 48 )
 
-[node name="HealthBarHeart" parent="UI/HealthBar" instance=ExtResource( 5 )]
+[node name="Sprite" type="Sprite" parent="UI/FighterUI"]
+position = Vector2( 8, 0 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 48, 8, 8, 8 )
+
+[node name="HealthBar" type="Node2D" parent="UI/FighterUI"]
+position = Vector2( 0, 8 )
+script = ExtResource( 4 )
+heart_color = Color( 0.482353, 0.729412, 0.45098, 1 )
+
+[node name="HealthBarHeart" parent="UI/FighterUI/HealthBar" instance=ExtResource( 5 )]
+modulate = Color( 0.482353, 0.729412, 0.45098, 1 )
+
+[node name="HealthBarHeart2" parent="UI/FighterUI/HealthBar" instance=ExtResource( 5 )]
+modulate = Color( 0.482353, 0.729412, 0.45098, 1 )
+position = Vector2( 7, 0 )
+
+[node name="HealthBarHeart3" parent="UI/FighterUI/HealthBar" instance=ExtResource( 5 )]
+modulate = Color( 0.482353, 0.729412, 0.45098, 1 )
+position = Vector2( 14, 0 )
+
+[node name="Label" type="Label" parent="UI/FighterUI"]
+margin_top = 11.0
+margin_right = 24.0
+margin_bottom = 21.0
+text = "wasd"
+align = 1
+
+[node name="ThiefUI" type="Node2D" parent="UI"]
+position = Vector2( 56, 48 )
+
+[node name="Sprite" type="Sprite" parent="UI/ThiefUI"]
+position = Vector2( 8, 0 )
+texture = ExtResource( 2 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 64, 8, 8, 8 )
+
+[node name="HealthBar" type="Node2D" parent="UI/ThiefUI"]
+position = Vector2( 15, 8 )
+script = ExtResource( 4 )
+heart_width = -7
+heart_color = Color( 0.741176, 0.34902, 0.870588, 1 )
+
+[node name="HealthBarHeart" parent="UI/ThiefUI/HealthBar" instance=ExtResource( 5 )]
+modulate = Color( 0.741176, 0.34902, 0.870588, 1 )
+
+[node name="HealthBarHeart2" parent="UI/ThiefUI/HealthBar" instance=ExtResource( 5 )]
+modulate = Color( 0.741176, 0.34902, 0.870588, 1 )
+position = Vector2( -7, 0 )
+
+[node name="HealthBarHeart3" parent="UI/ThiefUI/HealthBar" instance=ExtResource( 5 )]
+modulate = Color( 0.741176, 0.34902, 0.870588, 1 )
+position = Vector2( -14, 0 )
+
+[node name="Label" type="Label" parent="UI/ThiefUI"]
+margin_top = 11.0
+margin_right = 24.0
+margin_bottom = 16.0
+text = "ijkl"
+align = 1
 
 [node name="TreasureMessage" type="Panel" parent="UI"]
 visible = false
@@ -179,6 +252,7 @@ margin_left = -24.0
 margin_top = -24.0
 margin_right = 24.0
 margin_bottom = -6.0
+shortcut = SubResource( 5 )
 text = "Surface"
 
 [node name="HealthMessage" type="Panel" parent="UI"]
@@ -196,7 +270,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
 margin_right = -8.0
-text = "Out of health..."
+text = "Ran out of health!"
 align = 1
 autowrap = true
 
@@ -209,7 +283,53 @@ margin_left = -24.0
 margin_top = -24.0
 margin_right = 24.0
 margin_bottom = -6.0
+shortcut = SubResource( 8 )
 text = "Surface"
+
+[node name="EscapeMessage" type="Panel" parent="UI"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 4.0
+margin_right = -8.0
+margin_bottom = -20.0
+theme = ExtResource( 13 )
+
+[node name="Label" type="Label" parent="UI/EscapeMessage"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_right = -4.0
+text = "Surface now?"
+align = 1
+autowrap = true
+
+[node name="HSplitContainer" type="HBoxContainer" parent="UI/EscapeMessage"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -20.0
+margin_right = -4.0
+margin_bottom = -4.0
+alignment = 1
+
+[node name="YesButton" type="Button" parent="UI/EscapeMessage/HSplitContainer"]
+margin_left = 14.0
+margin_right = 28.0
+margin_bottom = 16.0
+shortcut = SubResource( 8 )
+text = "Yes"
+
+[node name="NoButton" type="Button" parent="UI/EscapeMessage/HSplitContainer"]
+margin_left = 32.0
+margin_right = 42.0
+margin_bottom = 16.0
+shortcut = SubResource( 8 )
+text = "No"
 
 [connection signal="pressed" from="UI/TreasureMessage/Button" to="." method="_on_SurfaceButton_pressed"]
 [connection signal="pressed" from="UI/HealthMessage/Button" to="." method="_on_SurfaceButton_pressed"]
+[connection signal="pressed" from="UI/EscapeMessage/HSplitContainer/YesButton" to="." method="_on_SurfaceButton_pressed"]
+[connection signal="pressed" from="UI/EscapeMessage/HSplitContainer/NoButton" to="." method="_on_SurfaceButton_pressed"]

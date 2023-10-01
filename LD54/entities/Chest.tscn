@@ -11,7 +11,8 @@ region_enabled = true
 region_rect = Rect2( 16, 8, 8, 8 )
 script = ExtResource( 3 )
 
-[node name="Interaction_Hero" type="Node" parent="."]
+[node name="Interaction_Thief" type="Node" parent="."]
 script = ExtResource( 2 )
 gives = "Gold"
+give_amount = 2
 remove_self = true
