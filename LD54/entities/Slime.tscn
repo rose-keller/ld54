@@ -30,6 +30,7 @@ script = ExtResource( 2 )
 
 [node name="Interaction_Fighter" type="Node" parent="."]
 script = ExtResource( 3 )
+consumes = "Heart"
 gives = "Gold"
 remove_self = true
 

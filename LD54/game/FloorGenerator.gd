@@ -44,7 +44,8 @@ func generate_floor(hero_order, start_coords):
 
 func generate_heroes(hero_order, start_coords):
 	for i in range(hero_order.size()):
-		var side = unused_sides.pop_at(randi() % unused_sides.size())
+		var side = 3 if i == 0 else 1
+		unused_sides.remove(side)
 		var coord = get_coord_on_side(side)
 		var hero = spawn(hero_order[i], coord)#start_coords[i])
 		heroes.append(hero)

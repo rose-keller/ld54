@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://game/FloorGenerator.gd" type="Script" id=1]
 [ext_resource path="res://art1.png" type="Texture" id=2]
@@ -110,16 +110,28 @@ points = PoolVector2Array( 0, 0, 8, 0, 8, 8, 0, 8 )
 4/z_index = 0
 
 [sub_resource type="InputEventAction" id=6]
-action = "a"
+action = "accept"
 
 [sub_resource type="ShortCut" id=5]
 shortcut = SubResource( 6 )
 
-[sub_resource type="InputEventAction" id=7]
-action = "a"
+[sub_resource type="InputEventAction" id=13]
+action = "accept"
 
-[sub_resource type="ShortCut" id=8]
-shortcut = SubResource( 7 )
+[sub_resource type="ShortCut" id=14]
+shortcut = SubResource( 13 )
+
+[sub_resource type="InputEventAction" id=11]
+action = "accept"
+
+[sub_resource type="ShortCut" id=12]
+shortcut = SubResource( 11 )
+
+[sub_resource type="InputEventAction" id=9]
+action = "cancel"
+
+[sub_resource type="ShortCut" id=10]
+shortcut = SubResource( 9 )
 
 [node name="Game" type="Node"]
 script = ExtResource( 12 )
@@ -127,7 +139,7 @@ script = ExtResource( 12 )
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 160.0
 margin_bottom = 144.0
-color = Color( 0, 0, 0, 1 )
+color = Color( 0.167969, 0.145004, 0.167969, 1 )
 
 [node name="Floor" type="Node2D" parent="."]
 position = Vector2( 24, 16 )
@@ -137,7 +149,7 @@ script = ExtResource( 1 )
 tile_set = SubResource( 1 )
 cell_size = Vector2( 8, 8 )
 format = 1
-tile_data = PoolIntArray( 0, 3, 0, 1, 1, 0, 2, 3, 0, 65536, 1, 0, 65537, 3, 0, 65538, 1, 0, 131072, 3, 0, 131073, 1, 0, 131074, 3, 0 )
+tile_data = PoolIntArray( 0, 3, 0, 1, 1, 0, 2, 3, 0, 3, 1, 0, 65536, 1, 0, 65537, 3, 0, 65538, 1, 0, 65539, 3, 0, 131072, 3, 0, 131073, 1, 0, 131074, 3, 0, 131075, 1, 0, 196608, 1, 0, 196609, 3, 0, 196610, 1, 0, 196611, 3, 0 )
 
 [node name="Corners2" type="Sprite" parent="Floor"]
 visible = false
@@ -225,7 +237,7 @@ margin_bottom = 16.0
 text = "ijkl"
 align = 1
 
-[node name="TreasureMessage" type="Panel" parent="UI"]
+[node name="TreasureMessage" type="Panel" parent="UI" groups=["popups"]]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -252,10 +264,11 @@ margin_left = -24.0
 margin_top = -24.0
 margin_right = 24.0
 margin_bottom = -6.0
+shortcut_in_tooltip = false
 shortcut = SubResource( 5 )
 text = "Surface"
 
-[node name="HealthMessage" type="Panel" parent="UI"]
+[node name="HealthMessage" type="Panel" parent="UI" groups=["popups"]]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -283,15 +296,16 @@ margin_left = -24.0
 margin_top = -24.0
 margin_right = 24.0
 margin_bottom = -6.0
-shortcut = SubResource( 8 )
+shortcut_in_tooltip = false
+shortcut = SubResource( 14 )
 text = "Surface"
 
-[node name="EscapeMessage" type="Panel" parent="UI"]
+[node name="EscapeMessage" type="Panel" parent="UI" groups=["popups"]]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
-margin_top = 4.0
+margin_top = 16.0
 margin_right = -8.0
 margin_bottom = -20.0
 theme = ExtResource( 13 )
@@ -305,31 +319,25 @@ text = "Surface now?"
 align = 1
 autowrap = true
 
-[node name="HSplitContainer" type="HBoxContainer" parent="UI/EscapeMessage"]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="YesButton" type="Button" parent="UI/EscapeMessage"]
 margin_left = 4.0
-margin_top = -20.0
-margin_right = -4.0
-margin_bottom = -4.0
-alignment = 1
-
-[node name="YesButton" type="Button" parent="UI/EscapeMessage/HSplitContainer"]
-margin_left = 14.0
-margin_right = 28.0
-margin_bottom = 16.0
-shortcut = SubResource( 8 )
+margin_top = 16.0
+margin_right = 30.0
+margin_bottom = 31.0
+shortcut_in_tooltip = false
+shortcut = SubResource( 12 )
 text = "Yes"
 
-[node name="NoButton" type="Button" parent="UI/EscapeMessage/HSplitContainer"]
+[node name="NoButton" type="Button" parent="UI/EscapeMessage"]
 margin_left = 32.0
-margin_right = 42.0
-margin_bottom = 16.0
-shortcut = SubResource( 8 )
+margin_top = 16.0
+margin_right = 60.0
+margin_bottom = 31.0
+shortcut_in_tooltip = false
+shortcut = SubResource( 10 )
 text = "No"
 
 [connection signal="pressed" from="UI/TreasureMessage/Button" to="." method="_on_SurfaceButton_pressed"]
 [connection signal="pressed" from="UI/HealthMessage/Button" to="." method="_on_SurfaceButton_pressed"]
-[connection signal="pressed" from="UI/EscapeMessage/HSplitContainer/YesButton" to="." method="_on_SurfaceButton_pressed"]
-[connection signal="pressed" from="UI/EscapeMessage/HSplitContainer/NoButton" to="." method="_on_SurfaceButton_pressed"]
+[connection signal="pressed" from="UI/EscapeMessage/YesButton" to="." method="_on_SurfaceButton_pressed"]
+[connection signal="pressed" from="UI/EscapeMessage/NoButton" to="." method="_on_CancelButton_pressed"]

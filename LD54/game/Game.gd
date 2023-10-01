@@ -7,6 +7,8 @@ var step_time = 0
 var step_duration = 0.3
 
 onready var floor_gen = $Floor
+onready var popups = get_tree().get_nodes_in_group("popups")
+
 var fighter
 var thief
 var entering_heroes
@@ -15,42 +17,43 @@ var start_coords = []
 
 var level = 1
 var stats = {"Gold": 0,
-			"MaxGold": 10-10,
-			"Heart_Fighter": 0, "MaxHealth_Fighter": 3-1,
-			"Heart_Thief": 0, "MaxHealth_Thief": 1-1}
+			"MaxGold": 5,
+			"Heart_Fighter": 0, "MaxHealth_Fighter": 6,
+			"Heart_Thief": 0, "MaxHealth_Thief": 2}
 
 
 func _ready():
 	randomize()
 	restart()
 
+func win():
+	stats.MaxHealth_Fighter += 2
+	stats.MaxHealth_Thief += 2
+	stats.MaxGold += 10
+
 
 func restart():
-	$UI/TreasureMessage.visible = false
-	$UI/HealthMessage.visible = false
+	for popup in popups:
+		popup.visible = false
+	
 	level = 0
-	stats.MaxHealth_Fighter += 1
-	stats.MaxHealth_Thief += 1
 	stats.Heart_Fighter = stats.MaxHealth_Fighter
 	stats.Heart_Thief = stats.MaxHealth_Thief
-	stats.MaxGold += 10
 	stats.Gold = 0
 	update_ui()
 	descend()
 
 
 func descend():
-	if not hero_order or hero_order.size() < 2:
-		hero_order = ["HeroThief", "HeroFighter"]
-		#start_coords = [Vector2(0, 1), Vector2(-1, 1)]
-	
-	for hero_name in hero_order:
-		if "Fighter" in hero_name and stats.Heart_Fighter <= 0:
-			print("fighter is dead!")
-			hero_order.remove(hero_order.find(hero_name))
-		elif "Thief" in hero_name and stats.Heart_Thief <= 0:
-			print("thief is dead!")
-			hero_order.remove(hero_order.find(hero_name))
+	var hero_order = []
+	if stats.Heart_Fighter > 0:
+		hero_order.append("HeroFighter")
+	if stats.Heart_Thief > 0:
+		hero_order.append("HeroThief")
+		
+	if not hero_order:
+		$UI/HealthMessage.visible = true
+		return
 	
 	level += 1
 	update_ui()
@@ -75,8 +78,8 @@ func descend():
 
 func update_hero_entrances():
 	for hero in entering_heroes:
-		print("entering: ", hero, get_overlapping(hero))
-		if get_overlapping(hero):
+		print("entering: ", hero, get_overlapping_hero(hero))
+		if get_overlapping_hero(hero):
 			hero.visible = false
 		else:
 			hero.visible = true
@@ -84,8 +87,11 @@ func update_hero_entrances():
 	
 
 func _input(event):
-	if event.is_action_pressed("b"):
-		descend()
+	for popup in popups:
+		if popup.visible: return
+	
+	if event.is_action_released("accept") or event.is_action_released("cancel"):
+		$UI/EscapeMessage.visible = true
 #	elif event.is_action_pressed("b"):
 #		switch_hero()
 
@@ -99,6 +105,9 @@ func _input(event):
 
 
 func _process(delta):
+	for popup in popups:
+		if popup.visible: return
+	
 	var heroes = get_tree().get_nodes_in_group("heroes")
 	for hero in heroes:
 		if hero.visible and not hero.is_busy():
@@ -110,18 +119,21 @@ func _process(delta):
 func get_entity(coord):
 	var entities = get_tree().get_nodes_in_group("interactable")
 	for entity in entities:
-		if get_coord(entity) == coord:
+		if get_coord(entity) == coord and entity.visible:
 			return entity
 
 
-func get_overlapping(actor):
-	var entities = get_tree().get_nodes_in_group("interactable")
+func get_overlapping_hero(actor):
+	var entities = get_tree().get_nodes_in_group("heroes")
 	for entity in entities:
 		if entity != actor and get_coord(entity) == get_coord(actor):
 			return entity
 
 
 func remove(entity):
+	entity.visible = false
+	entity.dead = true
+	
 	if entity.is_in_group("heroes"):
 		print("Removing: ",entity.name, get_coord(entity))
 		hero_order.append(entity.filename)
@@ -134,8 +146,6 @@ func remove(entity):
 			if not hero.dead:
 				return
 		descend()
-	else:
-		entity.queue_free()
 
 
 func is_blocked(coord):
@@ -197,6 +207,7 @@ func gain_resource(actor, resource, amount):
 		
 		if stats.Gold >= stats.MaxGold:
 			$UI/TreasureMessage.visible = true
+			win()
 
 
 func update_ui():
@@ -214,3 +225,7 @@ func set_coord(entity, coord):
 
 func _on_SurfaceButton_pressed():
 	restart()
+
+
+func _on_CancelButton_pressed():
+	$UI/EscapeMessage.visible = false

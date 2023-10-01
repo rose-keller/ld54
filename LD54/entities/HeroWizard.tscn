@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://art1.png" type="Texture" id=1]
-[ext_resource path="res://entities/Interaction.gd" type="Script" id=2]
 [ext_resource path="res://entities/Interactable.gd" type="Script" id=3]
 
 [sub_resource type="AtlasTexture" id=1]
@@ -22,13 +21,8 @@ animations = [ {
 
 [node name="HeroWizard" type="AnimatedSprite"]
 frames = SubResource( 3 )
-frame = 1
 speed_scale = 0.5
 playing = true
 centered = false
 script = ExtResource( 3 )
 tags = [ "Wizard", "Hero" ]
-
-[node name="Interaction_Hero" type="Node" parent="."]
-script = ExtResource( 2 )
-movement = 2

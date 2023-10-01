@@ -14,5 +14,4 @@ script = ExtResource( 3 )
 [node name="Interaction_Thief" type="Node" parent="."]
 script = ExtResource( 2 )
 gives = "Gold"
-give_amount = 2
 remove_self = true
